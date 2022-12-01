@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
 
 public class Emp_POS extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
@@ -77,6 +78,17 @@ public class Emp_POS extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         btnPOSConfirm = new javax.swing.JButton();
         btnPOSRefund = new javax.swing.JButton();
+
+        tfPOSPCode.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ke) {
+               if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9'|| ke.getKeyChar() == KeyEvent.VK_BACK_SPACE ) {
+                tfPOSPCode.setEditable(true);
+               } else {
+                tfPOSPCode.setEditable(false);
+                JOptionPane.showMessageDialog(null, "Product must only contain numbers!", "Product Code Invalid", JOptionPane.WARNING_MESSAGE);
+               }
+            }
+         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -482,8 +494,14 @@ public class Emp_POS extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String prodcodeString = tfPOSPCode.getText();
+        if(prodcodeString.equals("")){
+            JOptionPane.showMessageDialog(null, "Please enter a product code.", "No product code entered", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         int prodcode = Integer.parseInt(tfPOSPCode.getText());
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         dbConnectionRepo db = new dbConnectionRepo();
         try(Connection con = DriverManager.getConnection(conString);)
@@ -499,6 +517,10 @@ public class Emp_POS extends javax.swing.JFrame {
                 tfPOSPName.setText(prodname);
                 tfPOSPPrice.setText(String.valueOf(prodcd));
                 spPOSPQty.setEnabled(true);
+                int qtyval = Integer.parseInt(spPOSPQty.getValue().toString());
+                int price = Integer.parseInt(tfPOSPPrice.getText());
+                int tol = qtyval*price;
+                tfPOSAmount.setText(String.valueOf(tol));
             }
             else
                 JOptionPane.showMessageDialog(null, "Product Not Found", "Entered product code does not exist in the database.", JOptionPane.WARNING_MESSAGE);
@@ -509,7 +531,7 @@ public class Emp_POS extends javax.swing.JFrame {
 
     private void btnAddCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCartActionPerformed
         int prodcode = Integer.parseInt(tfPOSPCode.getText());
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         dbConnectionRepo db = new dbConnectionRepo();
         try(Connection con = DriverManager.getConnection(conString);)
@@ -567,8 +589,8 @@ public class Emp_POS extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPOSPrintActionPerformed
 
     private void btnPOSVoidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOSVoidActionPerformed
-        String admin_username = JOptionPane.showInputDialog("Admin Username: ");
-        String admin_password = JOptionPane.showInputDialog("Admin Password: ");
+        String admin_username = JOptionPane.showInputDialog(null, "Admin Username: ", "Need admin credentials to refund", JOptionPane.INFORMATION_MESSAGE);
+        String admin_password = JOptionPane.showInputDialog(null, "Admin Password: ", "Need admin credentials to refund", JOptionPane.INFORMATION_MESSAGE);
                 dbConnectionRepo db = new dbConnectionRepo();
         if(db.adminLoginDao(admin_username, admin_password)){
             model.removeRow(tblPOS.getSelectedRow());
@@ -615,13 +637,13 @@ public class Emp_POS extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void btnPOSRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOSRefundActionPerformed
-        String admin_username = JOptionPane.showInputDialog("Admin Username: ");
-        String admin_password = JOptionPane.showInputDialog("Admin Password: ");
+        String admin_username = JOptionPane.showInputDialog(null, "Admin Username: ", "Need admin credentials to refund", JOptionPane.INFORMATION_MESSAGE);
+        String admin_password = JOptionPane.showInputDialog(null, "Admin Password: ", "Need admin credentials to refund", JOptionPane.INFORMATION_MESSAGE);
                 dbConnectionRepo db = new dbConnectionRepo();
         if(db.adminLoginDao(admin_username, admin_password)){
             String refund = JOptionPane.showInputDialog("Transaction ID to refund: ");
             int ref = Integer.parseInt(refund);
-            String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+            String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
             String driver =  "com.mysql.cj.jdbc.Driver";
             try(Connection con = DriverManager.getConnection(conString);)
             {
@@ -662,7 +684,7 @@ public class Emp_POS extends javax.swing.JFrame {
         String status = "SUCCESS";
         int lastid = db.sales_AddDAO(date, subtotal, cash, change, status);
         
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         int rows = tblPOS.getRowCount();
         try(Connection con = DriverManager.getConnection(conString);){

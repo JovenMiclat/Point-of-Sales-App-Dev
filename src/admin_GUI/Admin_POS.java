@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.*;
 
 public class Admin_POS extends javax.swing.JFrame {
@@ -94,6 +93,7 @@ public class Admin_POS extends javax.swing.JFrame {
                 tfPOSPCode.setEditable(true);
                } else {
                 tfPOSPCode.setEditable(false);
+                JOptionPane.showMessageDialog(null, "Product must only contain numbers!", "Product Code Invalid", JOptionPane.WARNING_MESSAGE);
                }
             }
          });
@@ -667,7 +667,7 @@ public class Admin_POS extends javax.swing.JFrame {
         }
         
         int prodcode = Integer.parseInt(tfPOSPCode.getText());
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         dbConnectionRepo db = new dbConnectionRepo();
 
@@ -699,7 +699,7 @@ public class Admin_POS extends javax.swing.JFrame {
 
     private void btnAddCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCartActionPerformed
         int prodcode = Integer.parseInt(tfPOSPCode.getText());
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         dbConnectionRepo db = new dbConnectionRepo();
 
@@ -801,7 +801,7 @@ public class Admin_POS extends javax.swing.JFrame {
     private void btnPOSRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOSRefundActionPerformed
         String refund = JOptionPane.showInputDialog("Transaction ID to refund: ");
         int ref = Integer.parseInt(refund);
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         dbConnectionRepo db = new dbConnectionRepo();
         try(Connection con = DriverManager.getConnection(conString);)
@@ -839,7 +839,7 @@ public class Admin_POS extends javax.swing.JFrame {
         dbConnectionRepo db = new dbConnectionRepo();
         int lastid = db.sales_AddDAO(date, subtotal, cash, change, status);
         
-        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+        String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
         String driver =  "com.mysql.cj.jdbc.Driver";
         int rows = tblPOS.getRowCount();
         try(Connection con = DriverManager.getConnection(conString);){

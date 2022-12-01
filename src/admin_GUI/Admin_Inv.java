@@ -5,6 +5,7 @@ import adet_pos.welcome;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
 
 public class Admin_Inv extends javax.swing.JFrame {
     int ttlX, ttlY;
@@ -68,11 +69,43 @@ public class Admin_Inv extends javax.swing.JFrame {
         btnPUpdate = new javax.swing.JButton();
         btnPDelete = new javax.swing.JButton();
 
+        tfPCode.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ke) {
+               if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9'|| ke.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+                tfPCode.setEditable(true);
+               } else {
+                tfPCode.setEditable(false);
+                JOptionPane.showMessageDialog(null, "Product Code must only contain numbers!", "Product Code Invalid", JOptionPane.WARNING_MESSAGE);
+               }
+            }
+         });
+
+         tfPQty.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ke) {
+               if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9'|| ke.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+                tfPQty.setEditable(true);
+               } else {
+                tfPQty.setEditable(false);
+                JOptionPane.showMessageDialog(null, "Quantity must only contain numbers!", "Quantity Invalid", JOptionPane.WARNING_MESSAGE);
+               }
+            }
+         });
+
+         tfPPrice.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ke) {
+               if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9'|| ke.getKeyChar() == KeyEvent.VK_BACK_SPACE || ke.getKeyChar() == '.') {
+                tfPPrice.setEditable(true);
+               } else {
+                tfPPrice.setEditable(false);
+                JOptionPane.showMessageDialog(null, "Product Price must only contain decimal numbers!", "Price Invalid", JOptionPane.WARNING_MESSAGE);
+               }
+            }
+         });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(35, 38, 43));
-        tfPCode.setEditable(false);
         tfPCode.setBackground(new java.awt.Color(211, 211, 211));
         jPanel6.setBackground(new java.awt.Color(35, 38, 43));
 

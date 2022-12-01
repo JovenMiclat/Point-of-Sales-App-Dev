@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class dbConnectionRepo {
-    private String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=root&autoReconnect=true&useSSL=false";
+    private String conString = "jdbc:mysql://localhost:3306/adet?user=root&password=&autoReconnect=true&useSSL=false";
     private String driver =  "com.mysql.cj.jdbc.Driver";
     
     public dbConnectionRepo(){
